@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BitcoinHDWallet</string>
+    <string name="wallet_name">Bitcoin HD Wallet</string>
+    <string name="button_create_account">Create account</string>
+    <string name="button_restore_account">Restore account</string>
+    <string name="textview_balance">Balance:</string>
+
+
+
+
+
+    <string name="pending">Pending</string>
+    <string name="success">Success</string>
+    <string name="rejected">Rejected</string>
+    <string name="failed">Failed</string>
+</resources>

@@ -1,18 +1,9 @@
 package com.koroqe.bitcoinhdwallet.data.db.models
 
 import android.content.Context
-import com.distributedlab.kuna.ApiHelper
-import com.distributedlab.kuna.R
-import com.distributedlab.kuna.data.api.models.PaymentsResponse
-import com.distributedlab.kuna.utils.RealmHelper
 import com.koroqe.bitcoinhdwallet.R
-import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.stellar.sdk.requests.ApiDateHelper
-import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Koroqe on 12-Dec-17.

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore.RestorePresenter" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightBlue">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_restore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+            <TextView
+                android:id="@+id/tvRestoreWallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/restore_wallet"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_restore"
+                tools:layout_editor_absoluteY="32dp" />
+
+            <TextView
+                android:id="@+id/tvEnterSeedPhrase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/enter_your_seed_phrase_here"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRestoreWallet" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardViewRestore"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_margin="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEnterSeedPhrase">
+
+                <EditText
+                    android:id="@+id/etSeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="274dp" />
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/buttonRestoreAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> listener.onClickRestore(etSeed.getText().toString())}"
+                android:text="@string/button_restore_account"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewRestore" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/frameProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/restore_message_wait"
+                android:gravity="center"
+                android:layout_margin="24dp"
+                android:textSize="20sp"/>
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/restoreProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                app:mpb_progressStyle="horizontal"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
+            <TextView
+                android:id="@+id/restoreDownloadInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="download info"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

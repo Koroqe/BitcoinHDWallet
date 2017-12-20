@@ -1,17 +1,23 @@
 package com.koroqe.bitcoinhdwallet.di.module
 
 import android.content.Context
+import com.koroqe.bitcoinhdwallet.data.db.AppDbHelper
 import com.koroqe.bitcoinhdwallet.data.prefs.SharedPrefs
+import com.koroqe.bitcoinhdwallet.wallet.WalletKit
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import org.bitcoinj.params.TestNet3Params
+import java.io.File
 import javax.inject.Singleton
 
 
 /**
- * Created by danielyakovlev on 6/16/17.
+ * Created by Koroqe on 14-Dec-17.
+ *
  */
+
 
 @Module
 class DataModule {
@@ -26,6 +32,14 @@ class DataModule {
                 .build()
         Realm.setDefaultConfiguration(config)
         return Realm.getDefaultInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWalletKit() : WalletKit {
+
+        val params = TestNet3Params.get()
+        return WalletKit(params, File("."), "walletappkit")
     }
 
     // endregion Realm
@@ -90,16 +104,16 @@ class DataModule {
 //    fun provideAppApiHelper(stellarServer: Server, horizonService: HorizonService)
 //            = AppApiHelper(stellarServer, horizonService)
 //
-//    @Singleton
-//    @Provides
-//    fun provideAppDbHelper() = AppDbHelper()
+    @Singleton
+    @Provides
+    fun provideAppDbHelper() = AppDbHelper()
 
     @Singleton
     @Provides
     fun provideSharedPrefs() = SharedPrefs()
 
-    companion object {
-        val SUBMIT_TRANSACTION_TIMEOUT = 20 * 1000
-        val SIGNATURE_VALID_SEC = 60
-    }
+//    companion object {
+//        val SUBMIT_TRANSACTION_TIMEOUT = 20 * 1000
+//        val SIGNATURE_VALID_SEC = 60
+//    }
 }

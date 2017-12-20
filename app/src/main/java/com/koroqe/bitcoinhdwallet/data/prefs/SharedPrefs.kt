@@ -9,9 +9,11 @@ import javax.inject.Inject
 
 /**
  * Created by Koroqe on 12-Dec-17.
+ *
  */
 
 class SharedPrefs : SharedPrefsHelper {
+
 
     // region Keys
     val IS_PIN_CODE_ENABLED = "is_pin_code_enabled"
@@ -51,6 +53,14 @@ class SharedPrefs : SharedPrefsHelper {
     // endregion Pin code
 
     // region Account
+
+    override fun isAccountExisted(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+
+
     override fun getBalance() = BigDecimal(getStringByKey(BALANCE))
     override fun getBalanceFormatted(): String {
         val balance = getStringByKey(BALANCE)

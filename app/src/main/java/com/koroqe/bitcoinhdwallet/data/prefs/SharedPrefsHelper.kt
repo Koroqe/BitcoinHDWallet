@@ -25,5 +25,11 @@ interface SharedPrefsHelper {
     fun setCurrentBalanceId(balanceId: String)
     fun getCurrentBalanceId(): String
 
+
+
+
+    fun isAccountExisted() : Boolean
+
+
     // endregion Account
 }

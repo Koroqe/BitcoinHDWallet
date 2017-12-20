@@ -1,5 +1,8 @@
 package com.koroqe.bitcoinhdwallet.data
 
+import com.koroqe.bitcoinhdwallet.data.db.AppDbHelper
+import com.koroqe.bitcoinhdwallet.data.db.DbHelper
+import com.koroqe.bitcoinhdwallet.data.db.models.TxModel
 import com.koroqe.bitcoinhdwallet.data.prefs.SharedPrefs
 import com.koroqe.bitcoinhdwallet.data.prefs.SharedPrefsHelper
 import java.math.BigDecimal
@@ -16,23 +19,19 @@ class Repository @Inject constructor(var sharedPrefs: SharedPrefs,
     : SharedPrefsHelper, DbHelper {
 
     // region DB
-    override fun getAllTxesFromDb() = appDbHelper.getAllTxesFromDb()
+//    override fun getAllTxesFromDb() = appDbHelper.getAllTxesFromDb()
 
     override fun saveTxToDb(tx: TxModel) = appDbHelper.saveTxToDb(tx)
     override fun deleteTxFromDb(tx: TxModel) = appDbHelper.deleteTxFromDb(tx)
     override fun deleteAllTxesFromDb() = appDbHelper.deleteAllTxesFromDb()
     override fun saveTxesToDb(txes: List<TxModel>) = appDbHelper.saveTxesToDb(txes)
 
-    override fun getNewTxesFrom(txes: List<TxModel>) = appDbHelper.getNewTxesFrom(txes)
+//    override fun getNewTxesFrom(txes: List<TxModel>) = appDbHelper.getNewTxesFrom(txes)
     override fun clearRealm() = appDbHelper.clearRealm()
     // endregion Db
 
     // region SharedPrefs
-    override fun isPinCodeEnabled() = sharedPrefs.isPinCodeEnabled()
 
-    override fun setPinCodeEnabled(isEnabled: Boolean) = sharedPrefs.setPinCodeEnabled(isEnabled)
-    override fun isPinCodeExists() = sharedPrefs.isPinCodeExists()
-    override fun setPinCodeExists(isPinCodeExists: Boolean) = sharedPrefs.setPinCodeExists(isPinCodeExists)
     override fun getBalanceFormatted() = sharedPrefs.getBalanceFormatted()
     override fun getBalance() = sharedPrefs.getBalance()
     override fun setBalance(balance: BigDecimal) = sharedPrefs.setBalance(balance)
@@ -43,24 +42,26 @@ class Repository @Inject constructor(var sharedPrefs: SharedPrefs,
     override fun setCurrentBalanceId(balanceId: String) = sharedPrefs.setCurrentBalanceId(balanceId)
     override fun getCurrentBalanceId() = sharedPrefs.getCurrentBalanceId()
 
-    override fun getPinCodeHash() = sharedPrefs.getPinCodeHash()
     override fun saveSeedWithEncryption(seed: String, defaultEncryptionKey: Boolean)
             = sharedPrefs.saveSeedWithEncryption(seed, defaultEncryptionKey)
     override fun getDecryptedSeed(defaultEncryptionKey: Boolean) = sharedPrefs.getDecryptedSeed(defaultEncryptionKey)
     override fun getEncryptedSeed() = sharedPrefs.getEncryptedSeed()
     override fun removeSavedSeed() = sharedPrefs.removeSavedSeed()
 
+    override fun isAccountExisted() = sharedPrefs.isAccountExisted()
+
+
     // endregion SharedPrefs
 
-    override fun downloadAllTxes() = apiHelper.downloadAllTxes()
+//    override fun downloadAllTxes() = apiHelper.downloadAllTxes()
 
-    override fun downloadTxes(cursor: String?, limit: Int) = apiHelper.downloadTxes(cursor, limit)
+//    override fun downloadTxes(cursor: String?, limit: Int) = apiHelper.downloadTxes(cursor, limit)
+//
+//    override fun getAccount(accountId: String) = apiHelper.getAccount(accountId)
+//    override fun submitTransaction(paymentOperation: PaymentOperation) = apiHelper.submitTransaction(paymentOperation)
 
-    override fun getAccount(accountId: String) = apiHelper.getAccount(accountId)
-    override fun submitTransaction(paymentOperation: PaymentOperation) = apiHelper.submitTransaction(paymentOperation)
-
-    override fun createWallet(phoneNumber: String, password: String,
-                              account: KeyPair, tfaAccount: KeyPair?)
-            = apiHelper.createWallet(phoneNumber, password, account, tfaAccount)
+//    override fun createWallet(phoneNumber: String, password: String,
+//                              account: KeyPair, tfaAccount: KeyPair?)
+//            = apiHelper.createWallet(phoneNumber, password, account, tfaAccount)
 
 }

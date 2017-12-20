@@ -10,9 +10,16 @@ android {
         applicationId "com.koroqe.bitcoinhdwallet"
         minSdkVersion 19
         targetSdkVersion 26
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
     buildTypes {
         release {
@@ -50,20 +57,42 @@ dependencies {
 //    compile "com.android.support:preference-v7:$supportLibVersion"
 //    compile "com.android.support:preference-v14:$supportLibVersion"
 
-    //bicoinj
+    // Bicoinj
     compile 'org.bitcoinj:bitcoinj-core:0.14.5'
 
-    //rxjava
+    // Rxjava
     compile "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-//    compile "io.reactivex.rxjava2:rxAndroid:2.0.1"
     compile "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 
-    //dagger
-    compile "com.google.dagger:dagger-android:$daggerVersion"
-    compile "com.google.dagger:dagger-android-support:$daggerVersion" // if you use the support libraries
-    compile "com.google.dagger:dagger-android-processor:$daggerVersion" //for annotationProcessor
-    compile "com.google.dagger:dagger-compiler:$daggerVersion"
+    // Dagger
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
-    //timber
+    // DataBinding
+    kapt "com.android.databinding:compiler:3.0.1"
+
+    // Multidex
+    compile 'com.android.support:multidex:1.0.2'
+
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+    // Guava
+    compile 'com.google.guava:guava:23.5-android'
+
+    // Timber
     compile "com.jakewharton.timber:timber:$timberVersion"
+
+    // Moxy
+    compile 'com.arello-mobile:moxy:1.5.3'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
+    compile 'com.arello-mobile:moxy-android:1.5.3'
+    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
+    kapt 'com.arello-mobile:moxy-compiler:1.5.3'
+
+    // Material progressbar
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 }

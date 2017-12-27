@@ -1,22 +1,26 @@
 package com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore
 
+import com.arellomobile.mvp.MvpView
+
 /**
  * Created by Koroqe on 14-Dec-17.
  */
 
-internal interface SendContract {
+interface SendContract {
 
-    interface View {
+    interface View : MvpView {
 
         fun openQRscanner()
-
-        fun updateBalance()
+        fun showError(message: String?)
+        fun showMessageSelectRecepient()
+        fun showMessageEnterAmount()
+        fun showMessageNotEnoughFunds()
+        fun resetAmount()
     }
 
     interface Listener {
 
         fun onClickSend(address : String, amount : String)
-
-        fun onClickQQCode()
+        fun onClickQRCode()
     }
 }

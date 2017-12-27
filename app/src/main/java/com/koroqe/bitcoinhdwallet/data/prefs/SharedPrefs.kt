@@ -14,20 +14,11 @@ import javax.inject.Inject
 
 class SharedPrefs : SharedPrefsHelper {
 
-
-    // region Keys
-    val IS_PIN_CODE_ENABLED = "is_pin_code_enabled"
-    val IS_PIN_CODE_EXISTS = "is_pin_code_exists"
     val BALANCE = "balance"
     val CURRENT_CURRENCY = "current_currency"
-    val CURRENT_USER_PHONE_NUMBER = "current_user_phone_number"
-    val CURRENT_BALANCE_ID = "current_balance_id"
     val ENCRYPTED_SEED = "encrypted_seed"
-
-//    // No not change! This key is provided with pin code lib
-//    // Contains hash of pin code
-//    val PASSWORD_PREFERENCE_KEY = "PASSCODE"
-//    // endregion Keys
+    val ACCOUNT_EXSITS = "account_exists"
+    val WALLET_FIRST_LAUNCH = "wallet_first_launch"
 
     @Inject
     lateinit var sharedPrefs: SharedPreferences
@@ -53,11 +44,10 @@ class SharedPrefs : SharedPrefsHelper {
     // endregion Pin code
 
     // region Account
-
-    override fun isAccountExisted(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
+    override fun isAccountExisted() = getBooleanByKey(ACCOUNT_EXSITS)
+    override fun setAccountExisted(boolean: Boolean) = saveBoolean(ACCOUNT_EXSITS, boolean)
+    override fun isFirstLaunch(): Boolean = getBooleanByKey(WALLET_FIRST_LAUNCH)
+    override fun setWalletFirstLaunch(boolean: Boolean) = saveBoolean(WALLET_FIRST_LAUNCH, boolean)
 
 
 
@@ -71,10 +61,6 @@ class SharedPrefs : SharedPrefsHelper {
     override fun setBalance(balance: BigDecimal) = saveString(BALANCE, balance.toPlainString())
     override fun getCurrentCurrencyName() = getStringByKey(CURRENT_CURRENCY)
     override fun setCurrentCurrencyName(currencyName: String) = saveString(CURRENT_CURRENCY, currencyName)
-    override fun getCurrentUserPhoneNumber() = getStringByKey(CURRENT_USER_PHONE_NUMBER)
-    override fun setCurrentUserPhoneNumber(phone: String) = saveString(CURRENT_USER_PHONE_NUMBER, phone)
-    override fun setCurrentBalanceId(balanceId: String) = saveString(CURRENT_BALANCE_ID, balanceId)
-    override fun getCurrentBalanceId() = getStringByKey(CURRENT_BALANCE_ID)
     // endregion Account
 
     // region General helping methods
@@ -83,5 +69,7 @@ class SharedPrefs : SharedPrefsHelper {
     fun getStringByKey(key: String): String = sharedPrefs.getString(key, "")
     fun saveBoolean(key: String, value: Boolean) = sharedPrefs.edit().putBoolean(key, value).apply()
     fun getBooleanByKey(key: String): Boolean = sharedPrefs.getBoolean(key, false)
+
+
     // endregion General helping methods
 }

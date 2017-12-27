@@ -1,5 +1,6 @@
 package com.koroqe.bitcoinhdwallet.base
 
+import android.Manifest
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
@@ -7,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.koroqe.bitcoinhdwallet.event.BaseEvent
@@ -52,6 +52,10 @@ open class BaseActivity : MvpAppCompatActivity() {
                 .commitAllowingStateLoss()
     }
 
+    fun removeFragment(tag: String) {
+        fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag(tag)).commit()
+    }
+
     fun addFragmentWithBackStack(viewGroupId: Int, fragment: Fragment, tag: String) {
         fragmentManager
                 .beginTransaction()
@@ -68,36 +72,25 @@ open class BaseActivity : MvpAppCompatActivity() {
                 .commitAllowingStateLoss()
     }
 
-    fun resolveToolbar(fragment: BaseFragment, title: String) {
-
-        val toolbar = fragment.toolbar
-        toolbar.visibility = View.VISIBLE
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setHomeButtonEnabled(true)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = title
-
-//        if (fragment.toolbarNavigationActive()) {
-//            toolbar.setNavigationOnClickListener({ onBackPressed() })
-//        }
-    }
-
     fun getEventBus(): EventBus {
         return EventBus.getDefault()
     }
 
     fun checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            //            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
 //                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 //            } else {
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                        PERMISSIONS_REQUEST_STORAGE);
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.INTERNET),
+                    PERMISSIONS_REQUEST);
 //            }
         }
     }
@@ -114,9 +107,9 @@ open class BaseActivity : MvpAppCompatActivity() {
 
     companion object {
 
-        var PERMISSIONS_REQUEST_STORAGE = 10101
+        var PERMISSIONS_REQUEST = 10101
 
-        fun newIntent(context: Context, activity : BaseActivity): Intent {
+        fun newIntent(context: Context, activity: BaseActivity): Intent {
             val intent = Intent(context, activity::class.java)
             return intent
         }

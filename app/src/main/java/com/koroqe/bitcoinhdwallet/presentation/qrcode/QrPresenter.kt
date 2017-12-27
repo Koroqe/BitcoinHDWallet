@@ -1,9 +1,10 @@
-package com.koroqe.bitcoinhdwallet.presentation.main
+package com.koroqe.bitcoinhdwallet.presentation.qrcode
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.koroqe.bitcoinhdwallet.App
 import com.koroqe.bitcoinhdwallet.data.Repository
+import javax.inject.Inject
 
 /**
  * Created by Koroqe on 13-Dec-17.
@@ -11,9 +12,10 @@ import com.koroqe.bitcoinhdwallet.data.Repository
  */
 
 @InjectViewState
-class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener {
+class QrPresenter : MvpPresenter<QrContract.View>(), QrContract.Listener {
 
-    private lateinit var repository : Repository
+
+    @Inject lateinit var repository : Repository
 
     init {
         App.component?.inject(this)

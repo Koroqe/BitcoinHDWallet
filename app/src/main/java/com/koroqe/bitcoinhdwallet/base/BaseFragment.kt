@@ -1,7 +1,6 @@
 package com.koroqe.bitcoinhdwallet.base
 
 import android.content.Context
-import android.support.v7.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.MvpFragment
 import com.koroqe.bitcoinhdwallet.event.BaseEvent
@@ -21,6 +20,7 @@ abstract class BaseFragment : MvpFragment() {
     val eventBus: EventBus
         get() = EventBus.getDefault()
 
+    //Basic event for registration
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: BaseEvent) {
     }
@@ -35,9 +35,8 @@ abstract class BaseFragment : MvpFragment() {
         if (mNeedEventBusRegister) EventBus.getDefault().register(this)
     }
 
-    abstract val toolbar: Toolbar
-
     //should invoke in onResume before calling parent's super method in child fragment
+    //no need to unregister - it'll be done automatically
     protected fun registerEventBus() {
         mNeedEventBusRegister = true
     }

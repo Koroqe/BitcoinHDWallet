@@ -18,6 +18,7 @@ class Repository @Inject constructor(var sharedPrefs: SharedPrefs,
                                      var appDbHelper: AppDbHelper)
     : SharedPrefsHelper, DbHelper {
 
+
     // region DB
 //    override fun getAllTxesFromDb() = appDbHelper.getAllTxesFromDb()
 
@@ -37,11 +38,6 @@ class Repository @Inject constructor(var sharedPrefs: SharedPrefs,
     override fun setBalance(balance: BigDecimal) = sharedPrefs.setBalance(balance)
     override fun getCurrentCurrencyName() = sharedPrefs.getCurrentCurrencyName()
     override fun setCurrentCurrencyName(currencyName: String) = sharedPrefs.setCurrentCurrencyName(currencyName)
-    override fun setCurrentUserPhoneNumber(phone: String) = sharedPrefs.setCurrentUserPhoneNumber(phone)
-    override fun getCurrentUserPhoneNumber() = sharedPrefs.getCurrentUserPhoneNumber()
-    override fun setCurrentBalanceId(balanceId: String) = sharedPrefs.setCurrentBalanceId(balanceId)
-    override fun getCurrentBalanceId() = sharedPrefs.getCurrentBalanceId()
-
     override fun saveSeedWithEncryption(seed: String, defaultEncryptionKey: Boolean)
             = sharedPrefs.saveSeedWithEncryption(seed, defaultEncryptionKey)
     override fun getDecryptedSeed(defaultEncryptionKey: Boolean) = sharedPrefs.getDecryptedSeed(defaultEncryptionKey)
@@ -49,7 +45,9 @@ class Repository @Inject constructor(var sharedPrefs: SharedPrefs,
     override fun removeSavedSeed() = sharedPrefs.removeSavedSeed()
 
     override fun isAccountExisted() = sharedPrefs.isAccountExisted()
-
+    override fun setAccountExisted(boolean: Boolean) = sharedPrefs.setAccountExisted(boolean)
+    override fun setWalletFirstLaunch(boolean: Boolean) = sharedPrefs.setWalletFirstLaunch(boolean)
+    override fun isFirstLaunch(): Boolean = sharedPrefs.isFirstLaunch()
 
     // endregion SharedPrefs
 

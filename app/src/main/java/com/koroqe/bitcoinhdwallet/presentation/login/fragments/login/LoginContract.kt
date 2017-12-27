@@ -1,4 +1,4 @@
-package com.koroqe.bitcoinhdwallet.presentation.login
+package com.koroqe.bitcoinhdwallet.presentation.login.fragments.login
 
 import com.arellomobile.mvp.MvpView
 
@@ -11,8 +11,9 @@ interface LoginContract {
     interface View : MvpView {
 
         fun openMainScreen()
-
         fun openRestoreScreen()
+        fun showProgressBar()
+        fun hideProgressBar()
     }
 
     interface Listener {

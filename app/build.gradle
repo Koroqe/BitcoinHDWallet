@@ -95,4 +95,8 @@ dependencies {
 
     // Material progressbar
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+
+    // Qr-code
+    compile 'com.github.kenglxn.QRGen:android:2.2.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
 }

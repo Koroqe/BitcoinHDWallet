@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="com.koroqe.bitcoinhdwallet.presentation.main.fragments.main.MainPresenter"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/mainContainerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="381dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:text="@string/wallet_name"
+            android:textSize="28sp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="24dp"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{() -> listener.onClickSettings()}"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:background="@drawable/button_settings"
+                    android:padding="2dp"
+                    android:scaleType="center" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.6"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white20transparent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/textview_balance"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:id="@+id/buttonQRcode"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:padding="15dp"
+                    android:onClick="@{() -> listener.onClickQRcode()}"
+                    android:tint="@color/white20transparent"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/qrcode"
+                    android:scaleType="center" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSend"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@color/transparent"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:onClick="@{() -> listener.onClickSend()}"
+                    android:text="@string/button_send"
+                    android:textColor="@color/white20transparent"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/buttonReceive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/receive"
+                    android:textColor="@color/white20transparent"
+                    android:onClick="@{() -> listener.onClickReceive()}"
+                    android:textSize="18sp"
+                    android:background="@color/transparent"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_weight="0.5"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frameTransactions"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mainRecyclerTransactions"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tvSynchronizing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:text="Synchronizing..."/>
+
+        </FrameLayout>
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/downloadProgressBar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:indeterminate="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/frameTransactions"
+            app:mpb_progressStyle="horizontal"
+            android:visibility="gone"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

@@ -1,23 +1,26 @@
-package com.distributedlab.kuna.utils
+package com.koroqe.bitcoinhdwallet.utils
+
+import android.app.Fragment
+import android.content.Context
+import com.google.zxing.integration.android.IntentIntegrator
+import com.koroqe.bitcoinhdwallet.R
+import com.koroqe.bitcoinhdwallet.presentation.qrcode.QrActivity
 
 /**
- * Created by danielyakovlev on 6/20/17.
+ * Created by Koroqe on 13-Dec-17.
+ *
  */
 
 object QrHelper {
 
-//    fun openQrScanner(context: Context, fragment: Fragment, disablePinCodeFunction: () -> Unit) {
-//        disablePinCodeFunction()
-//        IntentIntegrator.forSupportFragment(fragment)
-//                .setOrientationLocked(false)
-//                .setBeepEnabled(false)
-//                .setCaptureActivity(ScanQrActivity::class.java)
-//                .setPrompt(context.getString(R.string.scan_qr_description))
-//                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
-//                .initiateScan()
-//    }
-//
-//    fun processQrContent(content: String, activity: AppCompatActivity) {
-//        Navigator.openSendFragmentWithInvoice(content, activity)
-//    }
+    fun openQrScanner(context: Context, fragment: Fragment) {
+        IntentIntegrator.forFragment(fragment)
+                .setOrientationLocked(false)
+                .setBeepEnabled(false)
+                .setCaptureActivity(QrActivity::class.java)
+                .setPrompt(context.getString(R.string.scan_qr_text))
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+                .initiateScan()
+    }
+
 }

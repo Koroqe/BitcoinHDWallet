@@ -1,21 +1,22 @@
 package com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore
 
+import com.arellomobile.mvp.MvpView
+
 /**
  * Created by Koroqe on 14-Dec-17.
  */
 
-internal interface ReceiveContract {
+interface ReceiveContract {
 
-    interface View {
-        fun copyToClipboard()
+    interface View : MvpView {
 
-        fun updateQRImage()
+        fun showMessageAdressCopied()
+        fun copyToClipboard(address: String)
+        fun setReceiveAddress(receiveAddress: String?)
     }
 
     interface Listener {
 
         fun onClickCopyToClipboard(address : String)
     }
-
-
 }

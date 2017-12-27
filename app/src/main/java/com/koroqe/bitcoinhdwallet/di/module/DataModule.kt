@@ -3,21 +3,16 @@ package com.koroqe.bitcoinhdwallet.di.module
 import android.content.Context
 import com.koroqe.bitcoinhdwallet.data.db.AppDbHelper
 import com.koroqe.bitcoinhdwallet.data.prefs.SharedPrefs
-import com.koroqe.bitcoinhdwallet.wallet.WalletKit
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import org.bitcoinj.params.TestNet3Params
-import java.io.File
 import javax.inject.Singleton
-
 
 /**
  * Created by Koroqe on 14-Dec-17.
  *
  */
-
 
 @Module
 class DataModule {
@@ -34,15 +29,12 @@ class DataModule {
         return Realm.getDefaultInstance()
     }
 
-    @Provides
-    @Singleton
-    fun provideWalletKit() : WalletKit {
-
-        val params = TestNet3Params.get()
-        return WalletKit(params, File("."), "walletappkit")
-    }
-
-    // endregion Realm
+//    @Provides
+//    @Singleton
+//    fun provideWalletKit() : WalletKit {
+//        val params = TestNet3Params.get()
+//        return WalletKit(params, Environment.getRootDirectory(), "walletkit")
+//    }
 
 //    // region Retrofit
 //    @Singleton

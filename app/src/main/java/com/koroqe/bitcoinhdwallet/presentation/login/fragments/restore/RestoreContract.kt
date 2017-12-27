@@ -17,11 +17,11 @@ interface RestoreContract {
     interface View : MvpView {
 
         fun restore()
-
         fun showErrorUnknownSeed()
-
         fun getCurrentTime()
         fun showProgressBarDownload()
         fun hideProgressBarDownload()
+        fun setDownloadProgress(progress: Double)
+        fun goToMainScreen()
     }
 }

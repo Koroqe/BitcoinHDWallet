@@ -1,0 +1,138 @@
+package com.koroqe.bitcoinhdwallet.presentation.main.fragments.main
+
+import android.os.Handler
+import com.arellomobile.mvp.InjectViewState
+import com.arellomobile.mvp.MvpPresenter
+import com.koroqe.bitcoinhdwallet.App
+import com.koroqe.bitcoinhdwallet.data.Repository
+import com.koroqe.bitcoinhdwallet.wallet.WalletKit
+import org.bitcoinj.core.listeners.DownloadProgressTracker
+import org.bitcoinj.utils.Threading
+import java.util.*
+import java.util.concurrent.Executor
+import javax.inject.Inject
+
+
+/**
+ * Created by Koroqe on 13-Dec-17.
+ *
+ */
+
+@InjectViewState
+class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, TxItemClickListener {
+
+    @Inject lateinit var repository: Repository
+
+    private var isDownloading = false
+
+    init {
+        App.component?.inject(this)
+    }
+
+    override fun onClickSettings() {
+        viewState.openSettings()
+    }
+
+    override fun onClickQRcode() {
+        if (isDownloading) {
+            showMessageIfDownloading()
+            return
+        }
+        viewState.openQRcodeScanner()
+    }
+
+    override fun onClickSend() {
+        if (isDownloading) {
+            showMessageIfDownloading()
+            return
+        }
+        viewState.openSendScreen()
+    }
+
+    override fun onClickReceive() {
+        if (isDownloading) {
+            showMessageIfDownloading()
+            return
+        }
+        viewState.openReceiveScreen()
+    }
+
+    override fun onClickTx(position: Int) {
+
+    }
+
+    fun setupWalletKit() {
+
+        setBtcSDKThread()
+        App.walletKit!!.setAutoSave(true)
+        App.walletKit!!.setBlockingStartup(false)
+        App.walletKit!!.startAsync()
+        App.walletKit!!.awaitRunning()
+    }
+
+    private fun setBtcSDKThread() {
+        val handler = Handler()
+        Threading.USER_THREAD = Executor { handler.post(it) }
+    }
+
+    fun setupData() {
+
+        setupWalletKit()
+        showSeedIfFirstLaunch()
+    }
+
+    private fun showSeedIfFirstLaunch() {
+        if (repository.isFirstLaunch()) {
+            viewState.showSeedForBackup()
+        }
+    }
+
+    private fun addDownloadListener() {
+        val listener = object : DownloadProgressTracker() {
+
+            override fun startDownload(blocks: Int) {
+                super.startDownload(blocks)
+                isDownloading = true
+            }
+
+            public override fun doneDownload() {
+                viewState.hideDownloadProgressBar()
+                isDownloading = false
+                viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+                viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+            }
+
+            public override fun progress(pct: Double, blocksSoFar: Int, date: Date?) {
+                super.progress(pct, blocksSoFar, date)
+                viewState.setDownloadProgress(pct.toInt())
+                isDownloading = true
+            }
+        }
+        App.walletKit!!.setDownloadListener(listener)
+    }
+
+    fun addSetupCompletedListener() {
+
+        val listener = object : WalletKit.SetupCompletedListener() {
+            override fun onSetupCompleted() {
+                addDownloadListener()
+                addCoinsReceiveListener()
+                addSetupCompletedListener()
+            }
+        }
+        App.walletKit!!.setupCompletedListener = listener
+    }
+
+
+    private fun addCoinsReceiveListener() {
+
+        App.walletKit!!.wallet().addCoinsReceivedEventListener { wallet, tx, prevBalance, newBalance ->
+            viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+            viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+        }
+    }
+
+    private fun showMessageIfDownloading() {
+        viewState.showMessageDownloading()
+    }
+}

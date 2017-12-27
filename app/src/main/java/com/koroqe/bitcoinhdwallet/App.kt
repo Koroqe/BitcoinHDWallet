@@ -1,33 +1,26 @@
 package com.koroqe.bitcoinhdwallet
 
 import android.app.Application
-import com.koroqe.bitcoinhdwallet.data.Repository
 import com.koroqe.bitcoinhdwallet.di.component.AppComponent
 import com.koroqe.bitcoinhdwallet.di.component.DaggerAppComponent
-import com.koroqe.bitcoinhdwallet.di.component.HasComponent
 import com.koroqe.bitcoinhdwallet.di.module.ApplicationModule
 import com.koroqe.bitcoinhdwallet.wallet.WalletKit
-import javax.inject.Inject
+import org.bitcoinj.params.TestNet3Params
 
 /**
  * Created by Koroqe on 12-Dec-17.
  *
  */
 
-class App : Application(), HasComponent<AppComponent?> {
+class App : Application() {
 
-    @Inject lateinit var mRepository: Repository
-    @Inject lateinit var mWalletAppKit: WalletKit
+//    @Inject lateinit var mRepository: Repository
 
     override fun onCreate() {
         super.onCreate()
 
         initDagger()
-//        initWalletAppKit()
-    }
-
-    fun get(): App {
-        return applicationContext as App
+        initWalletKit()
     }
 
     private fun initDagger() {
@@ -38,19 +31,25 @@ class App : Application(), HasComponent<AppComponent?> {
         component?.inject(this)
     }
 
-//    private fun initWalletAppKit() {
-//        mWalletAppKit.startAsync()
-//        mWalletAppKit.awaitRunning()
-//    }
+    private fun initWalletKit() {
+        walletKit = WalletKit(networkParams, filesDir, "walletkit")
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        walletKit!!.stopAsync()
+        walletKit!!.awaitTerminated()
+    }
 
     companion object {
 
+        val networkParams = TestNet3Params.get()
+
         val networkType : String = "test"
+
+        @JvmField var walletKit : WalletKit? = null
+
         var component: AppComponent? = null
             private set
-    }
-
-    override fun getComponent() : AppComponent? {
-        return component
     }
 }

@@ -12,7 +12,6 @@ interface SharedPrefsHelper {
     fun getDecryptedSeed(defaultEncryptionKey: Boolean): String
     fun getEncryptedSeed(): String
     fun removeSavedSeed()
-    // endregion Pin code
 
     // region Account
     fun getBalance(): BigDecimal
@@ -20,16 +19,12 @@ interface SharedPrefsHelper {
     fun setBalance(balance: BigDecimal)
     fun getCurrentCurrencyName(): String
     fun setCurrentCurrencyName(currencyName: String)
-    fun setCurrentUserPhoneNumber(phone: String)
-    fun getCurrentUserPhoneNumber(): String
-    fun setCurrentBalanceId(balanceId: String)
-    fun getCurrentBalanceId(): String
-
-
 
 
     fun isAccountExisted() : Boolean
-
-
+    fun setAccountExisted(boolean: Boolean)
     // endregion Account
+    fun setWalletFirstLaunch(boolean: Boolean)
+
+    fun isFirstLaunch(): Boolean
 }

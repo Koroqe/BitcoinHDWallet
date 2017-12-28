@@ -17,7 +17,7 @@ class SharedPrefs : SharedPrefsHelper {
     val BALANCE = "balance"
     val CURRENT_CURRENCY = "current_currency"
     val ENCRYPTED_SEED = "encrypted_seed"
-    val ACCOUNT_EXSITS = "account_exists"
+    val ACCOUNT_EXISTS = "account_exists"
     val WALLET_FIRST_LAUNCH = "wallet_first_launch"
 
     @Inject
@@ -44,8 +44,8 @@ class SharedPrefs : SharedPrefsHelper {
     // endregion Pin code
 
     // region Account
-    override fun isAccountExisted() = getBooleanByKey(ACCOUNT_EXSITS)
-    override fun setAccountExisted(boolean: Boolean) = saveBoolean(ACCOUNT_EXSITS, boolean)
+    override fun isAccountExisted() = getBooleanByKey(ACCOUNT_EXISTS)
+    override fun setAccountExisted(boolean: Boolean) = saveBoolean(ACCOUNT_EXISTS, boolean)
     override fun isFirstLaunch(): Boolean = getBooleanByKey(WALLET_FIRST_LAUNCH)
     override fun setWalletFirstLaunch(boolean: Boolean) = saveBoolean(WALLET_FIRST_LAUNCH, boolean)
 

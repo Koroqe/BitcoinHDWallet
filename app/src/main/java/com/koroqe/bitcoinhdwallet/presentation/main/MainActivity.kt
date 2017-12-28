@@ -3,6 +3,7 @@ package com.koroqe.bitcoinhdwallet.presentation.main
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import com.google.zxing.integration.android.IntentIntegrator
 import com.koroqe.bitcoinhdwallet.R
 import com.koroqe.bitcoinhdwallet.base.BaseActivity
 import com.koroqe.bitcoinhdwallet.databinding.ActivityMainBinding
@@ -10,7 +11,6 @@ import com.koroqe.bitcoinhdwallet.event.*
 import com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore.ReceiveFragment
 import com.koroqe.bitcoinhdwallet.presentation.main.fragments.main.MainFragment
 import com.koroqe.bitcoinhdwallet.presentation.main.fragments.send.SendFragment
-import com.koroqe.bitcoinhdwallet.presentation.qrcode.QrActivity
 import com.koroqe.bitcoinhdwallet.presentation.settings.SettingsActivity
 import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.showseed.ShowSeedFragment
 import org.greenrobot.eventbus.Subscribe
@@ -40,6 +40,19 @@ class MainActivity : BaseActivity() {
         super.onResume()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent)
+        if (result != null) {
+            if (result.contents != null) {
+                addFragmentWithBackStack(binding.mainContainer.id, SendFragment.newInstance(result.contents), SendFragment.TAG)
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, intent)
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EventOpenSendFragmentWithInvoice) {
         addFragmentWithBackStack(binding.mainContainer.id, SendFragment.newInstance(event.qrContent), SendFragment.TAG)
@@ -61,10 +74,10 @@ class MainActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: EventOpenQRCodeScanner) {
-        startActivity(Intent(this, QrActivity::class.java))
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun onEvent(event: EventOpenQRCodeScanner) {
+//        startActivity(Intent(this, QrActivity::class.java))
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EventOpenShowSeedFragment) {

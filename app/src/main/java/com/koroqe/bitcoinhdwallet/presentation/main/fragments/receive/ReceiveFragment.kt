@@ -34,6 +34,7 @@ class ReceiveFragment : MvpFragment(), ReceiveContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_receive, container, false)
+        binding.listener = presenter
         return binding.root
     }
 
@@ -64,7 +65,7 @@ class ReceiveFragment : MvpFragment(), ReceiveContract.View {
 
     private fun initQrCode() {
 
-        val myBitmap = QRCode.from(buildReceiveInvoice()).withSize(300, 300).bitmap()
+        val myBitmap = QRCode.from(presenter.getReceiveAddress()).withSize(300, 300).bitmap()
         binding.ivQRCode.setImageBitmap(myBitmap)
     }
 
@@ -73,9 +74,7 @@ class ReceiveFragment : MvpFragment(), ReceiveContract.View {
         binding.etAmount.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged (amount: Editable?) {
-                val myBitmap = QRCode.from(buildReceiveInvoice(amount.toString()))
-                        .withSize(300, 300).bitmap()
-                binding.ivQRCode.setImageBitmap(myBitmap)
+                initQrCode()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -85,13 +84,6 @@ class ReceiveFragment : MvpFragment(), ReceiveContract.View {
             }
         })
     }
-
-    private fun buildReceiveInvoice(amount: String = "") =
-
-            if (amount.isEmpty())
-                "balanceID:${presenter.getReceiveAdress()}"
-            else
-                "balanceID:${presenter.getReceiveAdress()} amount:$amount"
 
     companion object {
 

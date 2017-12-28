@@ -1,5 +1,6 @@
 package com.koroqe.bitcoinhdwallet.presentation.main.fragments.receive
 
+import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.koroqe.bitcoinhdwallet.App
 import com.koroqe.bitcoinhdwallet.data.Repository
@@ -10,6 +11,7 @@ import com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore.ReceiveCo
  *
  */
 
+@InjectViewState
 class ReceivePresenter : MvpPresenter<ReceiveContract.View>(), ReceiveContract.Listener {
 
     private lateinit var repo : Repository
@@ -31,9 +33,9 @@ class ReceivePresenter : MvpPresenter<ReceiveContract.View>(), ReceiveContract.L
 
     fun updateAdress() {
 
-        val receiveAddress = App.walletKit!!.wallet().freshReceiveAddress().toBase58()
+        val receiveAddress = App.walletKit!!.wallet().currentReceiveAddress().toBase58()
         viewState.setReceiveAddress(receiveAddress)
     }
 
-    fun getReceiveAdress(): String = App.walletKit!!.wallet().freshReceiveAddress().toBase58()
+    fun getReceiveAddress(): String = App.walletKit!!.wallet().freshReceiveAddress().toBase58()
 }

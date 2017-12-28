@@ -34,7 +34,7 @@ class LoginFragment : BaseFragment(), LoginContract.View {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.setupData()
+
     }
 
     override fun openMainScreen() {
@@ -50,6 +50,7 @@ class LoginFragment : BaseFragment(), LoginContract.View {
     override fun onResume() {
         registerEventBus()
         super.onResume()
+        presenter.setupData()
     }
 
     override fun showProgressBar() {

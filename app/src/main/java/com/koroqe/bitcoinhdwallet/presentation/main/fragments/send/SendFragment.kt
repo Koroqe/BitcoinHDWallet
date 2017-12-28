@@ -1,6 +1,5 @@
 package com.koroqe.bitcoinhdwallet.presentation.main.fragments.send
 
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.google.zxing.integration.android.IntentIntegrator
 import com.koroqe.bitcoinhdwallet.R
 import com.koroqe.bitcoinhdwallet.base.BaseFragment
 import com.koroqe.bitcoinhdwallet.databinding.FragmentSendBinding
-import com.koroqe.bitcoinhdwallet.event.EventOpenSendFragmentWithInvoice
 import com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore.SendContract
+import com.koroqe.bitcoinhdwallet.presentation.main.MainActivity
 import com.koroqe.bitcoinhdwallet.utils.QrHelper
 
 /**
@@ -28,21 +26,26 @@ class SendFragment : BaseFragment(), SendContract.View {
 
     lateinit var binding : FragmentSendBinding
 
+    private lateinit var qrContent: String
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?) : View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send, container, false)
-        var myView : View = binding.root
-        return myView
+        binding.listener = presenter
+        return binding.root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (qrContent.isNotEmpty()) {
+            fillInvoiceData()
+        }
     }
 
     override fun openQRscanner() {
-        QrHelper.openQrScanner(activity.applicationContext, this)
+        QrHelper.openQrScanner(activity as MainActivity)
     }
 
     override fun showError(message: String?) {
@@ -65,22 +68,14 @@ class SendFragment : BaseFragment(), SendContract.View {
         binding.etAmount.setText("")
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent)
-        if (result != null) {
-            if (result.contents != null) {
-                eventBus.post(EventOpenSendFragmentWithInvoice(result.contents))
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, intent)
-        }
-    }
-
     override fun onResume() {
         registerEventBus()
         super.onResume()
+    }
+
+    private fun fillInvoiceData() {
+
+        binding.tvAddress.setText(qrContent)
     }
 
     companion object {
@@ -89,11 +84,8 @@ class SendFragment : BaseFragment(), SendContract.View {
 
         fun newInstance(content : String): SendFragment {
             val fragment = SendFragment()
-            val args = Bundle()
-            args.putString("qr_content", content)
-            fragment.setArguments(args)
+            fragment.qrContent = content
             return fragment
         }
     }
-
 }

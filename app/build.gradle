@@ -99,4 +99,7 @@ dependencies {
     // Qr-code
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+
+    //Anko
+    compile 'org.jetbrains.anko:anko-sdk15:0.9.1'
 }

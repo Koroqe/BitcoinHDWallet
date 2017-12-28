@@ -1,16 +1,17 @@
 package com.koroqe.bitcoinhdwallet.presentation.main.fragments.main
 
-import android.os.Handler
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.koroqe.bitcoinhdwallet.App
 import com.koroqe.bitcoinhdwallet.data.Repository
 import com.koroqe.bitcoinhdwallet.wallet.WalletKit
 import org.bitcoinj.core.listeners.DownloadProgressTracker
-import org.bitcoinj.utils.Threading
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.*
-import java.util.concurrent.Executor
 import javax.inject.Inject
+
+
 
 
 /**
@@ -61,27 +62,31 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
 
     }
 
-    fun setupWalletKit() {
-
-        setBtcSDKThread()
-        App.walletKit!!.setAutoSave(true)
-        App.walletKit!!.setBlockingStartup(false)
-        App.walletKit!!.startAsync()
-        App.walletKit!!.awaitRunning()
-    }
-
-    private fun setBtcSDKThread() {
-        val handler = Handler()
-        Threading.USER_THREAD = Executor { handler.post(it) }
-    }
-
     fun setupData() {
 
         setupWalletKit()
         showSeedIfFirstLaunch()
     }
 
+    fun setupWalletKit() {
+
+        if (App.walletKit!!.isRunning) {
+            addDownloadListener()
+            addCoinsChangedListener()
+            viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+            viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+            return
+        }
+        addSetupCompletedListener()
+        isDownloading = true
+        App.walletKit!!.setAutoSave(true)
+        App.walletKit!!.setBlockingStartup(false)
+        App.walletKit!!.startAsync()
+        App.walletKit!!.awaitRunning()
+    }
+
     private fun showSeedIfFirstLaunch() {
+
         if (repository.isFirstLaunch()) {
             viewState.showSeedForBackup()
         }
@@ -91,20 +96,29 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
         val listener = object : DownloadProgressTracker() {
 
             override fun startDownload(blocks: Int) {
+
                 super.startDownload(blocks)
                 isDownloading = true
             }
 
             public override fun doneDownload() {
-                viewState.hideDownloadProgressBar()
+
+                doAsync { uiThread {
+                        viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+                        viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+                        viewState.hideDownloadProgressBar()
+                    }
+                }
                 isDownloading = false
-                viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
-                viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
             }
 
             public override fun progress(pct: Double, blocksSoFar: Int, date: Date?) {
                 super.progress(pct, blocksSoFar, date)
-                viewState.setDownloadProgress(pct.toInt())
+
+                doAsync { uiThread {
+                        viewState.setDownloadProgress(pct.toInt())
+                    }
+                }
                 isDownloading = true
             }
         }
@@ -116,17 +130,22 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
         val listener = object : WalletKit.SetupCompletedListener() {
             override fun onSetupCompleted() {
                 addDownloadListener()
-                addCoinsReceiveListener()
-                addSetupCompletedListener()
+                addCoinsChangedListener()
+                repository.setAccountExisted(true)
             }
         }
         App.walletKit!!.setupCompletedListener = listener
     }
 
 
-    private fun addCoinsReceiveListener() {
+    private fun addCoinsChangedListener() {
 
         App.walletKit!!.wallet().addCoinsReceivedEventListener { wallet, tx, prevBalance, newBalance ->
+            viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+            viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+        }
+
+        App.walletKit!!.wallet().addCoinsSentEventListener { wallet, tx, prevBalance, newBalance ->
             viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
             viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
         }

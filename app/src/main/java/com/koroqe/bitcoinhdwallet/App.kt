@@ -36,16 +36,15 @@ class App : Application() {
     }
 
     override fun onTerminate() {
-        super.onTerminate()
         walletKit!!.stopAsync()
         walletKit!!.awaitTerminated()
+        super.onTerminate()
     }
+
 
     companion object {
 
         val networkParams = TestNet3Params.get()
-
-        val networkType : String = "test"
 
         @JvmField var walletKit : WalletKit? = null
 

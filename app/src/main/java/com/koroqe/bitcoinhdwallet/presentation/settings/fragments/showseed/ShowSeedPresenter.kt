@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.koroqe.bitcoinhdwallet.App
 import com.koroqe.bitcoinhdwallet.data.Repository
+import org.bitcoinj.core.Utils
 import javax.inject.Inject
 
 
@@ -22,8 +23,7 @@ class ShowSeedPresenter : MvpPresenter<ShowSeedContract.View>(), ShowSeedContrac
     }
 
     fun setupData() {
-//        App.walletKit!!.awaitRunning()
-//        viewState.showCurrentSeed(Utils.join(App.walletKit!!.wallet().keyChainSeed.mnemonicCode))
+        viewState.showCurrentSeed(Utils.join(App.walletKit!!.wallet().keyChainSeed.mnemonicCode))
     }
 
     override fun onClickOk() {

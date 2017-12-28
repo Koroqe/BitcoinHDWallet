@@ -10,7 +10,12 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.koroqe.bitcoinhdwallet.R
 import com.koroqe.bitcoinhdwallet.base.BaseFragment
 import com.koroqe.bitcoinhdwallet.databinding.FragmentMainBinding
-import com.koroqe.bitcoinhdwallet.event.*
+import com.koroqe.bitcoinhdwallet.event.EventOpenReceiveFragment
+import com.koroqe.bitcoinhdwallet.event.EventOpenSendFragment
+import com.koroqe.bitcoinhdwallet.event.EventOpenSettingsActivity
+import com.koroqe.bitcoinhdwallet.event.EventOpenShowSeedFragment
+import com.koroqe.bitcoinhdwallet.presentation.main.MainActivity
+import com.koroqe.bitcoinhdwallet.utils.QrHelper
 import org.bitcoinj.wallet.WalletTransaction
 
 
@@ -60,7 +65,8 @@ class MainFragment : BaseFragment(), MainContract.View {
 
     override fun openQRcodeScanner() {
 
-        eventBus.post(EventOpenQRCodeScanner())
+        QrHelper.openQrScanner(activity as MainActivity)
+//        eventBus.post(EventOpenQRCodeScanner())
     }
 
     override fun showSeedForBackup() {
@@ -106,8 +112,6 @@ class MainFragment : BaseFragment(), MainContract.View {
 
         fun newInstance(): MainFragment {
             val fragment = MainFragment()
-//        val args = Bundle()
-//        fragment.setArguments(args)
             return fragment
         }
     }

@@ -21,10 +21,6 @@ class QrActivity : BaseActivity(), QrContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
-        binding.toolbarQr.title = "Scan QR code"
-        setSupportActionBar(binding.toolbarQr)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         capture = CaptureManager(this, binding.barcodeScanner)
         capture.initializeFromIntent(intent, savedInstanceState)
         capture.decode()

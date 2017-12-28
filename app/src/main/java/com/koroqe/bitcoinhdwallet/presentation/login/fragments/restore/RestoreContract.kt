@@ -22,6 +22,5 @@ interface RestoreContract {
         fun showProgressBarDownload()
         fun hideProgressBarDownload()
         fun setDownloadProgress(progress: Double)
-        fun goToMainScreen()
-    }
+        fun goToMainScreen() }
 }

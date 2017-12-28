@@ -1,12 +1,9 @@
 package com.koroqe.bitcoinhdwallet.presentation.login.fragments.login
 
-import android.os.Handler
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.koroqe.bitcoinhdwallet.App
 import com.koroqe.bitcoinhdwallet.data.Repository
-import org.bitcoinj.utils.Threading
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
 /**
@@ -25,20 +22,9 @@ class LoginPresenter : MvpPresenter<LoginContract.View>(), LoginContract.Listene
 
     override fun onClickCreateAccount() {
 
-        startWallet()
-        repository.setAccountExisted(true)
         repository.setWalletFirstLaunch(true)
         viewState.openMainScreen()
     }
-
-    private fun startWallet() {
-
-//        viewState.showProgressBar()
-//
-//        viewState.hideProgressBar()
-    }
-
-
 
     override fun onClickRestoreAccount() {
 
@@ -47,6 +33,6 @@ class LoginPresenter : MvpPresenter<LoginContract.View>(), LoginContract.Listene
 
     fun setupData() {
 
-        if (App.walletKit!!.isRunning) viewState.openMainScreen()
+        if (repository.isAccountExisted()) viewState.openMainScreen()
     }
 }

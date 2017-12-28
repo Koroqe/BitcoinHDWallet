@@ -39,6 +39,7 @@ class RestorePresenter : MvpPresenter<RestoreContract.View>(), RestoreContract.L
 
         App.walletKit!!.restoreWalletFromSeed(seed)
         if (App.walletKit!!.isRunning) stopKit()
+        viewState.goToMainScreen()
 //        startKit()
 //        viewState.showProgressBarDownload()
 //        addDownloadBlockListener()

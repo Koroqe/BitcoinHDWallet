@@ -1,52 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <variable
-            name="listener"
-            type="com.koroqe.bitcoinhdwallet.presentation.settings.SettingsPresenter"/>
-
     </data>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/settingsContainer"
+    <FrameLayout
+        android:id="@+id/settingsContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.koroqe.bitcoinhdwallet.presentation.settings.SettingsActivity">
 
-        <Button
-            android:id="@+id/buttonShowSeed"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:elevation="0dp"
-            android:text="Show seed phrase"
-            android:onClick="@{() -> listener.onClickShowSeed()}"
-            android:background="@color/white20transparent"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/buttonRestoreWallet"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:elevation="0dp"
-            android:text="Restore another wallet"
-            android:onClick="@{() -> listener.onClickRestoreAnotherWallet()}"
-            android:background="@color/white20transparent"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonShowSeed" />
-    </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
 
 </layout>
 

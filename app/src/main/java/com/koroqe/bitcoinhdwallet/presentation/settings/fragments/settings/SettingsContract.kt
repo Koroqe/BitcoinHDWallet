@@ -1,9 +1,10 @@
-package com.koroqe.bitcoinhdwallet.presentation.settings
+package com.koroqe.bitcoinhdwallet.presentation.settings.fragments.settings
 
 import com.arellomobile.mvp.MvpView
 
 /**
  * Created by Koroqe on 14-Dec-17.
+ *
  */
 
 interface SettingsContract {

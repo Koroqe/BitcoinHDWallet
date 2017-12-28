@@ -12,8 +12,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-
-
 /**
  * Created by Koroqe on 13-Dec-17.
  *
@@ -103,9 +101,9 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
 
             public override fun doneDownload() {
 
-                doAsync { uiThread {
-                        viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
-                        viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+                doAsync {
+                    uiThread {
+                        updateStats()
                         viewState.hideDownloadProgressBar()
                     }
                 }
@@ -115,10 +113,7 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
             public override fun progress(pct: Double, blocksSoFar: Int, date: Date?) {
                 super.progress(pct, blocksSoFar, date)
 
-                doAsync { uiThread {
-                        viewState.setDownloadProgress(pct.toInt())
-                    }
-                }
+                doAsync { uiThread { viewState.setDownloadProgress(pct.toInt()) } }
                 isDownloading = true
             }
         }
@@ -141,14 +136,18 @@ class MainPresenter : MvpPresenter<MainContract.View>(), MainContract.Listener, 
     private fun addCoinsChangedListener() {
 
         App.walletKit!!.wallet().addCoinsReceivedEventListener { wallet, tx, prevBalance, newBalance ->
-            viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
-            viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+            doAsync { uiThread { updateStats() } }
         }
 
         App.walletKit!!.wallet().addCoinsSentEventListener { wallet, tx, prevBalance, newBalance ->
-            viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
-            viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+            doAsync { uiThread { updateStats() } }
         }
+    }
+
+    private fun updateStats() {
+        viewState.updateBalance(App.walletKit!!.wallet().balance.toFriendlyString())
+        viewState.updateRecycler(App.walletKit!!.wallet().walletTransactions)
+
     }
 
     private fun showMessageIfDownloading() {

@@ -14,7 +14,7 @@ import com.koroqe.bitcoinhdwallet.presentation.main.fragments.main.MainPresenter
 import com.koroqe.bitcoinhdwallet.presentation.main.fragments.receive.ReceivePresenter
 import com.koroqe.bitcoinhdwallet.presentation.main.fragments.send.SendPresenter
 import com.koroqe.bitcoinhdwallet.presentation.qrcode.QrPresenter
-import com.koroqe.bitcoinhdwallet.presentation.settings.SettingsPresenter
+import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.settings.SettingsPresenter
 import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.showseed.ShowSeedPresenter
 import dagger.Component
 import io.realm.Realm

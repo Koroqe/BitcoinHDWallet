@@ -8,13 +8,17 @@ import com.koroqe.bitcoinhdwallet.R
 import com.koroqe.bitcoinhdwallet.base.BaseActivity
 import com.koroqe.bitcoinhdwallet.databinding.ActivitySettingsBinding
 import com.koroqe.bitcoinhdwallet.event.EventOpenMainScreen
+import com.koroqe.bitcoinhdwallet.event.EventOpenRestoreFragment
+import com.koroqe.bitcoinhdwallet.event.EventOpenShowSeedFragment
 import com.koroqe.bitcoinhdwallet.presentation.login.fragments.restore.RestoreFragment
 import com.koroqe.bitcoinhdwallet.presentation.main.MainActivity
+import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.settings.SettingsFragment
+import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.settings.SettingsPresenter
 import com.koroqe.bitcoinhdwallet.presentation.settings.fragments.showseed.ShowSeedFragment
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SettingsActivity : BaseActivity(), SettingsContract.View {
+class SettingsActivity : BaseActivity() {
 
     @InjectPresenter
     lateinit var presenter : SettingsPresenter
@@ -25,14 +29,7 @@ class SettingsActivity : BaseActivity(), SettingsContract.View {
         super.onCreate(savedInstanceState)
         binding  = DataBindingUtil.setContentView(this, R.layout.activity_settings)
         binding.listener = presenter
-    }
-
-    override fun openShowSeedScreen() {
-        addFragmentWithBackStack(R.id.settingsContainer, ShowSeedFragment.newInstance(), ShowSeedFragment.TAG)
-    }
-
-    override fun openRestoreWalletScreen() {
-        addFragmentWithBackStack(R.id.settingsContainer, RestoreFragment.newInstance(), RestoreFragment.TAG)
+        addFragmentWithBackStack(binding.settingsContainer.id, SettingsFragment.newInstance(), SettingsFragment.TAG)
     }
 
     override fun onResume() {
@@ -45,6 +42,23 @@ class SettingsActivity : BaseActivity(), SettingsContract.View {
         finish()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EventOpenRestoreFragment) {
+        addFragmentWithBackStack(
+                binding.settingsContainer.id,
+                RestoreFragment.newInstance(),
+                RestoreFragment.TAG
+        )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: EventOpenShowSeedFragment) {
+        addFragmentWithBackStack(
+                binding.settingsContainer.id,
+                ShowSeedFragment.newInstance(),
+                ShowSeedFragment.TAG
+        )
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EventOpenMainScreen) {
         openMainScreen()

@@ -1,4 +1,4 @@
-package com.koroqe.bitcoinhdwallet.presentation.settings
+package com.koroqe.bitcoinhdwallet.presentation.settings.fragments.settings
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
